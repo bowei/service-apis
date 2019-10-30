@@ -5,3 +5,6 @@ resources:
 - group: networking
   version: v1alpha1
   kind: GatewayClass
+- group: networking
+  version: v1alpha1
+  kind: Gateway
