@@ -1,3 +1,7 @@
 version: "2"
 domain: x.k8s.io
 repo: github.com/bowei/service-apis
+resources:
+- group: networking
+  version: v1alpha1
+  kind: GatewayClass
