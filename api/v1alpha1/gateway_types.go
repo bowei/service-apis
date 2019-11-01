@@ -16,22 +16,40 @@ limitations under the License.
 package v1alpha1
 
 import (
+	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // GatewaySpec defines the desired state of Gateway
 type GatewaySpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// Class used for this Gateway. This is the name of a GatewayClass.
+	Class string `json:"class"`
+	// Listeners associated with this Gateway. Listeners define what addresses,
+	// ports, protocols, configuration are bound on this Gateway.
+	Listeners []GatewayListener
+	// Routes associated with this Gateway.
+	Routes []core.TypedLocalObjectReference
+}
+
+// GatewayListener is xxx
+type GatewayListener struct {
+
 }
 
 // GatewayStatus defines the observed state of Gateway
 type GatewayStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// Listeners are xxx
+	Listeners []GatewayListenerStatus
+	// Routes are xxx
+	Routes []GatewayRouteStatus
+}
+
+type GatewayListenerStatus struct {
+
+}
+
+type GatewayRouteStatus struct {
+
 }
 
 // +kubebuilder:object:root=true
