@@ -20,6 +20,26 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// +kubebuilder:object:root=true
+
+// Gateway represents an instantiation of a service-traffic handling infrastructure.
+type Gateway struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   GatewaySpec   `json:"spec,omitempty"`
+	Status GatewayStatus `json:"status,omitempty"`
+}
+
+// +kubebuilder:object:root=true
+
+// GatewayList contains a list of Gateway
+type GatewayList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []Gateway `json:"items"`
+}
+
 // GatewaySpec defines the desired state of Gateway.
 //
 // The Spec is split into two major pieces: listeners describing
@@ -66,11 +86,14 @@ const (
 // Listener.
 type ListenerAddress struct {
 	// Type of the Address. This is one of the *AddressType constants.
+	//
+	// Support: Extended
 	Type string
 	// Address value. Examples: "1.2.3.4", "128::1", "my-ip-address".
 	Address string
 }
 
+// ListenerPort xxx
 type ListenerPort struct {
 	Port      *int
 	Protocols []string
@@ -95,33 +118,47 @@ const (
 // - aws: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html#describe-ssl-policies
 // - azure: https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-1112
 type ListenerTLS struct {
+	// Certificates is a list of certificates containing resources
+	// that are bound to the listener.
+	//
+	// If apiGroup and kind are empty, will default to Kubernetes Secrets resources.
+	//
+	// Support: Core (Kubernetes Secrets)
+	// Support: Implementation-specific (Other resource types)
 	Certificates []core.TypedLocalObjectReference
-
 	// MinimumVersion of TLS allowed. It is recommended to use one of
 	// the TLSVersion_* constants above. Note: this is not strongly
 	// typed to allow newly available version to be used without
 	// requiring updates to the API types. String must be of the form
 	// "<protocol>_<major>_<minor>".
 	//
-	// Support: Core.
+	// Support: Core
 	MinimumVersion *string
 	// Options are a list of key/value pairs to give extended options
 	// to the provider.
-	//
-	// Support: Implementation-specific.
 	//
 	// There variation among providers as to how ciphersuites are
 	// expressed. If there is a common subset for expressing ciphers
 	// then it will make sense to loft that as a core API
 	// construct.
+	//
+	// Support: Implementation-specific.
 	Options map[string]string
 }
 
 // GatewayStatus defines the observed state of Gateway
 type GatewayStatus struct {
-	// Listeners are xxx
+	// XXX overall status
+
+	// Listeners is the status for each listener block in the
+	// Spec. The status for a given block will match the order as
+	// declared in the Spec, e.g. the status for Spec.Listeners[3]
+	// will be in Status.Listeners[3].
 	Listeners []ListenerStatus
-	// Routes are xxx
+	// Routes is the status for each attached route to the
+	// Gateway. The status for a given route will match the orer as
+	// declared in the Spec, e.g. the status for Spec.Routes[3] will
+	// be in Status.Routes[3].
 	Routes []GatewayRouteStatus
 }
 
@@ -134,7 +171,7 @@ type ListenerStatus struct {
 	Address string
 }
 
-type ListenerErrorCode string
+type ListenerErrorReason string
 
 const (
 	// ErrListenerInvalidSpec is a generic error that is a
@@ -142,37 +179,20 @@ const (
 	// more specific error. Implementors should try to use more
 	// specific errors instead of this one to give users and
 	// automation a more information.
-	ErrListenerInvalidSpec ListenerErrorCode = "InvalidSpec"
+	ErrListenerInvalidSpec ListenerErrorReason = "InvalidSpec"
 	// ErrListenerBadAddress indicates the Address
-	ErrListenerBadAddress ListenerErrorCode = "InvalidAddress"
+	ErrListenerBadAddress ListenerErrorReason = "InvalidAddress"
 )
 
+// ListenerError is an error status for a given ListenerSpec.
 type ListenerError struct {
-	Code    ListenerErrorCode
+	// Reason is a automation friendly reason code for the error.
+	Reason ListenerErrorReason
+	// Message is a human-understandable error message.
 	Message string
 }
 
 type GatewayRouteStatus struct {
-}
-
-// +kubebuilder:object:root=true
-
-// Gateway is the Schema for the gateways API
-type Gateway struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   GatewaySpec   `json:"spec,omitempty"`
-	Status GatewayStatus `json:"status,omitempty"`
-}
-
-// +kubebuilder:object:root=true
-
-// GatewayList contains a list of Gateway
-type GatewayList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Gateway `json:"items"`
 }
 
 func init() {
