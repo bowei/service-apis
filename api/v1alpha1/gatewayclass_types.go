@@ -37,7 +37,7 @@ type GatewayClass struct {
 	// Controller is a domain/path that denotes which controller is responsible
 	// for this class. Example: "acme.io/gateway-controller".
 	Controller string `json:"controller" protobuf:"bytes,2,opt,name=controller"`
-	// Parameters is an controller specific resource containing the
+	// Parameters is a controller specific resource containing the
 	// configuration parameters corresponding to this class. This is optional
 	// if the controllers does not require any additional configuration.
 	// +optional

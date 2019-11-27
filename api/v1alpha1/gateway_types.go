@@ -47,7 +47,7 @@ type GatewayList struct {
 // routing.
 //
 // Not all possible combinations of options specified in the Spec are
-// valid. Some invalid configurations can be caught sychronously via a
+// valid. Some invalid configurations can be caught synchronously via a
 // webhook, but there are many cases that will require asynchronous
 // signaling via the GatewayStatus block.
 //
@@ -58,10 +58,10 @@ type GatewaySpec struct {
 	Class string `json:"class"`
 	// Listeners associated with this Gateway. Listeners define what addresses,
 	// ports, protocols are bound on this Gateway.
-	Listeners []Listener
+	Listeners []Listener `json:"listeners"`
 	// Routes associated with this Gateway. Routes define
 	// protocol-specific routing to backends (e.g. Services).
-	Routes []core.TypedLocalObjectReference
+	Routes []core.TypedLocalObjectReference `json:"routes"`
 }
 
 // Listener defines a
@@ -72,9 +72,9 @@ type Listener struct {
 	// this in the associated entry in GatewayStatus.Listeners.
 	//
 	// +optional
-	Address *ListenerAddress
+	Address *ListenerAddress `json:"address"`
 	// Ports is a list of ports associated with the Address.
-	Ports []ListenerPort
+	Ports []ListenerPort `json:"ports"`
 }
 
 const (
@@ -88,17 +88,17 @@ type ListenerAddress struct {
 	// Type of the Address. This is one of the *AddressType constants.
 	//
 	// Support: Extended
-	Type string
+	Type string `json:"type"`
 	// Address value. Examples: "1.2.3.4", "128::1", "my-ip-address".
-	Address string
+	Address string `json:"address"`
 }
 
 // ListenerPort xxx
 type ListenerPort struct {
-	Port      *int
-	Protocols []string
-	TLS       *ListenerTLS
-	Extension *core.TypedLocalObjectReference
+	Port      *int                            `json:"port"`
+	Protocols []string                        `json:"protocols"`
+	TLS       *ListenerTLS                    `json:"tls"`
+	Extension *core.TypedLocalObjectReference `json:"extension"`
 }
 
 const (
@@ -125,7 +125,7 @@ type ListenerTLS struct {
 	//
 	// Support: Core (Kubernetes Secrets)
 	// Support: Implementation-specific (Other resource types)
-	Certificates []core.TypedLocalObjectReference
+	Certificates []core.TypedLocalObjectReference `json:"certificates,omitempty"`
 	// MinimumVersion of TLS allowed. It is recommended to use one of
 	// the TLSVersion_* constants above. Note: this is not strongly
 	// typed to allow newly available version to be used without
@@ -133,7 +133,7 @@ type ListenerTLS struct {
 	// "<protocol>_<major>_<minor>".
 	//
 	// Support: Core
-	MinimumVersion *string
+	MinimumVersion *string `json:"minimumVersion"`
 	// Options are a list of key/value pairs to give extended options
 	// to the provider.
 	//
@@ -143,7 +143,7 @@ type ListenerTLS struct {
 	// construct.
 	//
 	// Support: Implementation-specific.
-	Options map[string]string
+	Options map[string]string `json:"options"`
 }
 
 // GatewayStatus defines the observed state of Gateway
@@ -154,21 +154,21 @@ type GatewayStatus struct {
 	// Spec. The status for a given block will match the order as
 	// declared in the Spec, e.g. the status for Spec.Listeners[3]
 	// will be in Status.Listeners[3].
-	Listeners []ListenerStatus
+	Listeners []ListenerStatus `json:"listeners"`
 	// Routes is the status for each attached route to the
 	// Gateway. The status for a given route will match the orer as
 	// declared in the Spec, e.g. the status for Spec.Routes[3] will
 	// be in Status.Routes[3].
-	Routes []GatewayRouteStatus
+	Routes []GatewayRouteStatus `json:"routes"`
 }
 
 type ListenerStatus struct {
 	// Errors is a list of reasons why a given Listener Spec is
 	// not valid. Errors will be empty if the Spec is valid.
-	Errors []ListenerError
+	Errors []ListenerError `json:"errors"`
 
 	//
-	Address string
+	Address string `json:"address"`
 }
 
 type ListenerErrorReason string
@@ -187,9 +187,9 @@ const (
 // ListenerError is an error status for a given ListenerSpec.
 type ListenerError struct {
 	// Reason is a automation friendly reason code for the error.
-	Reason ListenerErrorReason
+	Reason ListenerErrorReason `json:"reason"`
 	// Message is a human-understandable error message.
-	Message string
+	Message string `json:"message"`
 }
 
 type GatewayRouteStatus struct {
