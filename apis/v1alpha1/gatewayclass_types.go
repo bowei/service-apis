@@ -103,7 +103,7 @@ type GatewayClassSpec struct {
 // resource for a GatewayClass.
 //
 // +k8s:deepcopy-gen=false
-type GatewayClassParametersObjectReference = LocalObjectReference
+type GatewayClassParametersObjectReference LocalObjectReference
 
 // GatewayClassConditionType is the type of status conditions. This
 // type should be used with the GatewayClassStatus.Conditions field.

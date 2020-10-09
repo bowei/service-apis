@@ -292,7 +292,7 @@ func (in *GatewayClassSpec) DeepCopyInto(out *GatewayClassSpec) {
 	in.AllowedGatewayNamespaces.DeepCopyInto(&out.AllowedGatewayNamespaces)
 	if in.ParametersRef != nil {
 		in, out := &in.ParametersRef, &out.ParametersRef
-		*out = new(LocalObjectReference)
+		*out = new(GatewayClassParametersObjectReference)
 		**out = **in
 	}
 }
