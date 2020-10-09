@@ -392,8 +392,8 @@ in any namespace will be able to use this GatewayClass.</p>
 <td>
 <code>parametersRef</code></br>
 <em>
-<a href="#networking.x-k8s.io/v1alpha1.LocalObjectReference">
-LocalObjectReference
+<a href="#networking.x-k8s.io/v1alpha1.GatewayClassParametersObjectReference">
+GatewayClassParametersObjectReference
 </a>
 </em>
 </td>
@@ -1208,6 +1208,59 @@ values will depend on <code>Type</code> and support by the controller.</p>
 <p>GatewayClassConditionType is the type of status conditions. This
 type should be used with the GatewayClassStatus.Conditions field.</p>
 </p>
+<h3 id="networking.x-k8s.io/v1alpha1.GatewayClassParametersObjectReference">GatewayClassParametersObjectReference
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#networking.x-k8s.io/v1alpha1.GatewayClassSpec">GatewayClassSpec</a>)
+</p>
+<p>
+<p>GatewayClassParametersObjectReference identifies a cluster-scoped parameters
+resource for a GatewayClass.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>group</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Group is the group of the referent.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>kind</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Kind is kind of the referent.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the name of the referent.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="networking.x-k8s.io/v1alpha1.GatewayClassSpec">GatewayClassSpec
 </h3>
 <p>
@@ -1272,8 +1325,8 @@ in any namespace will be able to use this GatewayClass.</p>
 <td>
 <code>parametersRef</code></br>
 <em>
-<a href="#networking.x-k8s.io/v1alpha1.LocalObjectReference">
-LocalObjectReference
+<a href="#networking.x-k8s.io/v1alpha1.GatewayClassParametersObjectReference">
+GatewayClassParametersObjectReference
 </a>
 </em>
 </td>
@@ -2782,7 +2835,6 @@ status of all such Listeners.</p>
 <p>
 (<em>Appears on:</em>
 <a href="#networking.x-k8s.io/v1alpha1.BackendTLSConfig">BackendTLSConfig</a>, 
-<a href="#networking.x-k8s.io/v1alpha1.GatewayClassSpec">GatewayClassSpec</a>, 
 <a href="#networking.x-k8s.io/v1alpha1.GatewayTLSConfig">GatewayTLSConfig</a>, 
 <a href="#networking.x-k8s.io/v1alpha1.HTTPRequestMirrorFilter">HTTPRequestMirrorFilter</a>, 
 <a href="#networking.x-k8s.io/v1alpha1.HTTPRouteFilter">HTTPRouteFilter</a>, 
@@ -2795,8 +2847,7 @@ status of all such Listeners.</p>
 <a href="#networking.x-k8s.io/v1alpha1.UDPRouteMatch">UDPRouteMatch</a>)
 </p>
 <p>
-<p>RouteHostExtensionObjectReference identifies a route-host extension object
-within a known namespace.</p>
+<p>LocalObjectReference identifies an API object within a known namespace.</p>
 </p>
 <table>
 <thead>
@@ -3185,6 +3236,55 @@ Possible values are:
 <p>GatewayRefs must be specified when Allow is set to &ldquo;FromList&rdquo;. In that
 case, only Gateways referenced in this list will be allowed to use this
 route. This field is ignored for other values of &ldquo;Allow&rdquo;.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="networking.x-k8s.io/v1alpha1.RouteHostExtensionObjectReference">RouteHostExtensionObjectReference
+</h3>
+<p>
+<p>RouteHostExtensionObjectReference identifies a route-host extension object
+within a known namespace.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>group</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Group is the group of the referent.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>kind</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Kind is kind of the referent.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the name of the referent.</p>
 </td>
 </tr>
 </tbody>
